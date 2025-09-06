@@ -1,0 +1,40 @@
+// path: ./config/database.ts
+console.log("!!! LOADING POSTGRESQL CONFIG FILE - If you see this, the file is being read. !!!");
+
+import fs from 'fs';
+import path from 'path';
+
+export default ({ env }) => {
+  // Only enable SSL when explicitly requested. When false, set to `false` (not `{}`),
+  // because an empty object causes the pg client to enable TLS implicitly.
+  const ssl = env.bool('DATABASE_SSL', false)
+    ? {
+        ca: fs.readFileSync(path.join(process.cwd(), 'ssl', 'server-ca.pem')).toString(),
+        rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', true),
+        // Optional: set the TLS server name to match certificate SAN when connecting via IP
+        // (e.g., Cloud SQL public IP). Leave undefined if not needed.
+        servername: env('DATABASE_SSL_SERVERNAME') || undefined,
+      }
+    : false;
+
+  return {
+    connection: {
+      client: 'postgres',
+      connection: {
+        host: env('DATABASE_HOST', '127.0.0.1'),
+        port: env.int('DATABASE_PORT', 5432),
+        database: env('DATABASE_NAME', 'strapi'),
+        user: env('DATABASE_USERNAME', 'strapi'),
+        password: env('DATABASE_PASSWORD'),
+        ssl: env.bool('DATABASE_SSL', false) ? {
+          rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', false),
+          ca: env('DATABASE_SSL_CA') || undefined,
+          key: env('DATABASE_SSL_KEY') || undefined,
+          cert: env('DATABASE_SSL_CERT') || undefined,
+          servername: env('DATABASE_SSL_SERVERNAME') || undefined,
+        } : false,
+      },
+      debug: false,
+    },
+  };
+};

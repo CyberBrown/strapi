@@ -1,0 +1,16 @@
+{
+  "name": "My Strapi App",
+  "build": {
+    "dockerfile": "Dockerfile" // Or whatever your setup is
+  },
+  // ... other settings ...
+  "postCreateCommand": "echo \"$GCP_SA_KEY\" > /tmp/gcp-sa-key.json && curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-proxy/v2.8.2/cloud-sql-proxy.linux.amd64 && chmod +x /usr/local/bin/cloud-sql-proxy"
+}
+
+    {
+      "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+          "version": "latest"
+        }
+      }
+    }
