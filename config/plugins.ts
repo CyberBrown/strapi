@@ -1,6 +1,15 @@
 // ./config/plugins.ts
 
 export default ({ env }) => ({
+graphql: {
+enabled: true,
+      config: {
+      //  optional settings
+        endpoint: '/graphql',
+        shadowCRUD: true,
+        playgroundAlways: true,
+}},
+
   upload: {
     config: {
       provider: 'strapi-provider-cloudflare-r2',

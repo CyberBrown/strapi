@@ -137,3 +137,4 @@ env.production
 # service account keys
 ############################
 contentforge-cka64-c8a494efb7e8.json
+service-account-key.json

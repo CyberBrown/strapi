@@ -1,3 +1,5 @@
+These are just development notes and can be deleted in the future
+
 Based on the Dockerfile and package.json in your project, here are the equivalent commands to yarn build and yarn run dev when using Docker:
 
 For yarn build:
@@ -7,7 +9,8 @@ Command:
 
 bash
 
-docker build -t my-strapi-app .
+## old: docker build -t my-strapi-app .
+docker build -t my-strapi-develop .
 This command tells Docker to build an image from the Dockerfile in the current directory and tag it with the name my-strapi-app.
 
 For yarn run dev:

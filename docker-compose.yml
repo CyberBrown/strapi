@@ -5,7 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    command: yarn develop
+    # Install deps at container start to populate the named node_modules volume, then run Strapi in dev mode
+    command: sh -c "yarn install && yarn develop"
 
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
@@ -20,7 +21,7 @@ services:
       NODE_ENV: development
     volumes:
       - ./:/opt/app
-      - /opt/app/node_modules
+      - strapi_node_modules:/opt/app/node_modules
     ports:
       - "1337:1337"
     depends_on:
@@ -35,6 +36,9 @@ services:
       - "-instances=${GCP_INSTANCE_CONNECTION_NAME}=tcp:0.0.0.0:5432"
       - "-credential_file=/gcp/service-account-key.json"
     volumes:
-      - ./gcp/service-account-key.json:/gcp/service-account-key.json:ro
+      - /home/chris/strapi/gcp:/gcp:ro
     ports:
       - "5432:5432"
+
+volumes:
+  strapi_node_modules:
